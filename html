@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="uk" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ІМПЕРАТОР ЗАХИЩАЄ — Офіційний Когітаційний Термінал</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Cinzel+Decorative:wght@700;900&family=Press+Start+2P&family=UnifrakturMaguntia&family=Exo+2:ital,wght@0,300;0,600;0,800;1,400&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        imperial: {
+                            gold: '#d4af37',
+                            brightGold: '#fef08a',
+                            darkGold: '#85581A',
+                            red: '#8b0000',
+                            crimson: '#dc2626',
+                            brightRed: '#ff2222',
+                            dark: '#07070a',
+                            cogitator: '#0d130e',
+                            greenGlow: '#22c55e',
+                            parchment: '#f3e5ab'
+                        }
+                    },
+                    fontFamily: {
+                        gothic: ['UnifrakturMaguntia', 'serif'],
+                        cinzel: ['Cinzel', 'serif'],
+                        cinzelDeco: ['Cinzel Decorative', 'serif'],
+                        tech: ['"Press Start 2P"', 'monospace'],
+                        sans: ['"Exo 2"', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'gold-glow': '0 0 25px rgba(212, 175, 55, 0.4)',
+                        'red-glow': '0 0 25px rgba(220, 38, 38, 0.6)',
+                        'green-glow': '0 0 15px rgba(34, 197, 94, 0.5)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #07070a;
+            border-left: 1px solid #332200;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #8b0000;
+            border: 1px solid #d4af37;
+            border-radius: 2px;
+        }
+
+        /* CRT Screen Scanlines Effect */
+        .crt-overlay {
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%, 
+                rgba(0, 0, 0, 0.35) 50%
+            ), linear-gradient(
+                90deg,
+                rgba(255, 0, 0, 0.03),
+                rgba(0, 255, 0, 0.01),
+                rgba(0, 0, 255, 0.03)
+            );
+            background-size: 100% 4px, 6px 100%;
+            pointer-events: none;
+        }
+
+        /* CRT Screen Flicker Animation */
+        @keyframes crtFlicker {
+            0% { opacity: 0.98; }
+            50% { opacity: 1; }
+            52% { opacity: 0.94; }
+            54% { opacity: 0.99; }
+            80% { opacity: 0.96; }
+            100% { opacity: 0.98; }
+        }
+
+        .crt-flicker {
+            animation: crtFlicker 0.15s infinite;
+        }
+
+        /* Golden Aquila Pulsing Glow */
+        @keyframes aquilaPulse {
+            0%, 100% { filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.4)); transform: scale(1); }
+            50% { filter: drop-shadow(0 0 35px rgba(234, 179, 8, 0.8)); transform: scale(1.02); }
+        }
+
+        .aquila-animated {
+            animation: aquilaPulse 4s ease-in-out infinite;
+        }
+
+        /* Purity Seal Red Ribbon Wobble */
+        @keyframes ribbonRibbon {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(3deg); }
+        }
+
+        .purity-seal-ribbon {
+            animation: ribbonRibbon 3s ease-in-out infinite;
+            transform-origin: top center;
+        }
+
+        /* Text Shimmer Effect */
+        .gold-shimmer {
+            background: linear-gradient(90deg, #85581A 0%, #d4af37 50%, #fef08a 75%, #85581A 100%);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shimmer 5s linear infinite;
+        }
+
+        @keyframes shimmer {
+            to { background-position: 200% center; }
+        }
+
+        /* Gothic Border Grid */
+        .gothic-border {
+            border: 2px solid #d4af37;
+            position: relative;
+        }
+        .gothic-border::before {
+            content: "✠";
+            position: absolute;
+            top: -12px;
+            left: -12px;
+            background: #07070a;
+            color: #d4af37;
+            padding: 0 4px;
+            font-size: 16px;
+        }
+        .gothic-border::after {
+            content: "✠";
+            position: absolute;
+            bottom: -12px;
+            right: -12px;
+            background: #07070a;
+            color: #d4af37;
+            padding: 0 4px;
+            font-size: 16px;
+        }
+
+        /* Canvas Particle Background */
+        #emberCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-imperial-dark text-gray-200 font-sans min-h-screen overflow-x-hidden selection:bg-imperial-red selection:text-white">
+
+    <!-- Background Canvas for embers & grimdark fog -->
+    <canvas id="emberCanvas"></canvas>
+
+    <!-- CRT Overlay -->
+    <div class="crt-overlay fixed inset-0 z-50 opacity-60"></div>
+
+    <!-- MAIN WRAPPER -->
+    <div class="relative z-10 flex flex-col min-h-screen border-x border-amber-900/40 max-w-7xl mx-auto shadow-2xl bg-imperial-dark/95">
+
+        <!-- HEADER / VOX CONTROLS -->
+        <header class="border-b-2 border-imperial-gold/60 bg-black/90 p-4 sticky top-0 z-40 backdrop-blur-md">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 max-w-6xl mx-auto">
+                
+                <!-- Left: Imperial Skull & System Status -->
+                <div class="flex items-center gap-3">
+                    <div class="relative">
+                        <i class="fa-solid fa-skull text-imperial-gold text-3xl animate-pulse"></i>
+                        <span class="absolute -top-1 -right-1 flex h-3 w-3">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span>
+                        </span>
+                    </div>
+                    <div>
+                        <div class="font-tech text-xs text-imperial-gold tracking-widest uppercase">ТЕРМІНАЛ COGITATOR #994-M41</div>
+                        <div class="text-xs text-gray-400 font-mono flex items-center gap-2">
+                            <span>СТАТУС ВОКСУ: <span class="text-green-500 font-bold">АКТИВНИЙ</span></span>
+                            <span>•</span>
+                            <span id="terraClock" class="text-amber-400">999.M41</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Middle: Imperial Propaganda Ticker -->
+                <div class="hidden lg:flex items-center gap-2 bg-amber-950/40 border border-imperial-gold/30 px-4 py-1.5 rounded-sm max-w-md overflow-hidden text-xs text-amber-200/90 font-cinzel">
+                    <i class="fa-solid fa-scroll text-imperial-gold animate-bounce"></i>
+                    <marquee class="tracking-wide">НЕВІГЛАСТВО – ЦЕ БЛАГОСЛОВІННЯ! • РАЗОМ ЗА БОГА-ІМПЕРАТОРА! • ЄРЕСЬ ПОЧИНАЄТЬСЯ З НЕРОЗСУДЛИВОСТІ! • ВБИЙ КСЕНОСА, СПАЛИ ЄРЕТИКА, ОЧИСТИ НЕЧИСТОГО!</marquee>
+                </div>
+
+                <!-- Right: Audio Controls & Language Indicator -->
+                <div class="flex items-center gap-3">
+                    <button id="audioToggleBtn" onclick="toggleImperialVoxAudio()" class="px-3 py-1.5 bg-imperial-red/30 hover:bg-imperial-red/80 border border-imperial-gold text-imperial-gold hover:text-white rounded text-xs font-cinzel uppercase tracking-wider transition-all flex items-center gap-2 shadow-gold-glow">
+                        <i id="audioIcon" class="fa-solid fa-volume-xmark"></i>
+                        <span id="audioStatusText">УВІМКНУТИ ВОКС-ОРГАН</span>
+                    </button>
+                    <span class="px-2 py-1 bg-amber-950 text-imperial-gold text-xs font-tech border border-amber-700/50 rounded">UA-M41</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- HERO SECTION -->
+        <section class="relative pt-12 pb-16 px-4 md:px-8 text-center bg-gradient-to-b from-black via-imperial-dark to-black border-b border-imperial-gold/30">
+            
+            <!-- Imperial Aquila SVG Graphic -->
+            <div class="max-w-md mx-auto mb-6 aquila-animated">
+                <svg viewBox="0 0 500 200" class="w-full h-auto fill-current text-imperial-gold filter drop-shadow-[0_0_15px_rgba(212,175,55,0.6)]">
+                    <!-- Dynamic Eagle Double-Head Graphic -->
+                    <path d="M 250,20 L 220,50 L 180,30 L 190,60 L 140,50 L 160,80 L 100,70 L 130,100 L 50,90 L 100,120 L 20,120 L 80,140 L 10,160 L 120,160 L 200,180 L 250,190 L 300,180 L 380,160 L 490,160 L 420,140 L 480,120 L 400,120 L 450,100 L 370,100 L 400,70 L 340,80 L 360,50 L 310,60 L 320,30 L 280,50 Z"/>
+                    <circle cx="200" cy="55" r="5" fill="#dc2626"/>
+                    <circle cx="300" cy="55" r="5" fill="#dc2626"/>
+                    <path d="M 230,90 L 270,90 L 280,130 L 220,130 Z" fill="#85581A"/>
+                    <text x="250" y="120" text-anchor="middle" font-family="Cinzel" font-size="22" font-weight="bold" fill="#fef08a">I</text>
+                </svg>
+            </div>
+
+            <!-- Title & Subtitle -->
+            <h1 class="font-gothic text-5xl md:text-7xl lg:text-8xl text-imperial-gold tracking-wider mb-2 gold-shimmer drop-shadow-lg">
+                ІМПЕРАТОР ЗАХИЩАЄ
+            </h1>
+            <p class="font-cinzel text-xl md:text-2xl text-amber-200 uppercase tracking-widest font-bold mb-4">
+                СЛУЖИ ЙОМУ СЬОГОДНІ, БО ЗАВТРА МОЖЕ БУТИ ПІЗНО
+            </p>
+
+            <div class="max-w-3xl mx-auto border-t border-b border-imperial-gold/40 py-4 my-6 bg-black/60 backdrop-blur-sm px-6 rounded gothic-border">
+                <p class="font-sans text-gray-300 text-sm md:text-base leading-relaxed italic">
+                    «Людство стоїть на краю безодні. Лише непорушна віра в Трон Терри, залізна дисципліна Астра Мілітарум та безжальна пильність Інквізиції тримають темряву на відстані. Вiддай своє життя Захиснику Людства!»
+                </p>
+            </div>
+
+            <!-- Quick Action CTA Buttons -->
+            <div class="flex flex-wrap items-center justify-center gap-4 mt-8">
+                <a href="#recruit" onclick="playClickSound()" class="px-8 py-4 bg-imperial-red hover:bg-red-700 text-white font-cinzel font-bold text-lg rounded border-2 border-imperial-gold shadow-red-glow transition-all transform hover:-translate-y-1 flex items-center gap-3">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    ВСТУПИТИ ДО ГВАРДІЇ
+                </a>
+                <a href="#heresy-scanner" onclick="playClickSound()" class="px-8 py-4 bg-amber-950/80 hover:bg-amber-900 text-imperial-gold font-cinzel font-bold text-lg rounded border-2 border-imperial-gold/70 transition-all transform hover:-translate-y-1 flex items-center gap-3">
+                    <i class="fa-solid fa-eye"></i>
+                    ПЕРЕВІРКА НА ЄРЕСЬ
+                </a>
+                <button onclick="triggerExterminatusWarning()" class="px-6 py-4 bg-black/80 hover:bg-stone-900 text-red-500 font-tech text-xs rounded border border-red-800 transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-triangle-exclamation animate-pulse"></i>
+                    ЕКСТЕРМІНАТУС
+                </button>
+            </div>
+        </section>
+
+        <!-- THREE PILLARS / DOCTRINE SECTION -->
+        <section class="py-12 px-4 md:px-8 bg-black/80 border-b border-amber-900/30">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-10">
+                    <span class="text-imperial-gold font-tech text-xs tracking-widest uppercase block mb-1">ОСНОВИ ІМПЕРСЬКОЇ ВІРИ</span>
+                    <h2 class="font-cinzel text-3xl md:text-4xl text-white font-bold uppercase">ТРИ СТОВПИ СУВЕРЕНІТЕТУ</h2>
+                    <div class="w-24 h-1 bg-imperial-gold mx-auto mt-2"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Card 1: Absolute Loyalty -->
+                    <div class="bg-gradient-to-b from-amber-950/30 to-black border border-imperial-gold/40 p-6 rounded relative overflow-hidden group hover:border-imperial-gold transition-all shadow-lg">
+                        <div class="absolute -right-6 -bottom-6 text-amber-900/20 text-9xl font-gothic pointer-events-none group-hover:text-amber-700/20 transition-all">I</div>
+                        <div class="w-14 h-14 bg-imperial-red/20 border border-imperial-gold rounded-full flex items-center justify-center mb-4 text-imperial-gold text-2xl">
+                            <i class="fa-solid fa-crown"></i>
+                        </div>
+                        <h3 class="font-cinzel text-xl text-imperial-gold font-bold mb-2">АБСОЛЮТНА ВІРНІСТЬ</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">
+                            Бог-Імператор бачить кожну твою думку. Твоє життя належить Трону. Сумнів — це перший крок до зради, а зрада карається очищувальним вогнем.
+                        </p>
+                    </div>
+
+                    <!-- Card 2: Extermination of Xenofilth -->
+                    <div class="bg-gradient-to-b from-amber-950/30 to-black border border-imperial-gold/40 p-6 rounded relative overflow-hidden group hover:border-imperial-gold transition-all shadow-lg">
+                        <div class="absolute -right-6 -bottom-6 text-amber-900/20 text-9xl font-gothic pointer-events-none group-hover:text-amber-700/20 transition-all">II</div>
+                        <div class="w-14 h-14 bg-imperial-red/20 border border-imperial-gold rounded-full flex items-center justify-center mb-4 text-imperial-gold text-2xl">
+                            <i class="fa-solid fa-skull-crossbones"></i>
+                        </div>
+                        <h3 class="font-cinzel text-xl text-imperial-gold font-bold mb-2">ЗНИЩЕННЯ КСЕНОСІВ</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">
+                            Чужинці не мають права на існування у галактиці, створеній для людства. Ніякого милосердя Оркам, Ельдарам, Тау чи чумі Тіранідів!
+                        </p>
+                    </div>
+
+                    <!-- Card 3: Purity of Spirit -->
+                    <div class="bg-gradient-to-b from-amber-950/30 to-black border border-imperial-gold/40 p-6 rounded relative overflow-hidden group hover:border-imperial-gold transition-all shadow-lg">
+                        <div class="absolute -right-6 -bottom-6 text-amber-900/20 text-9xl font-gothic pointer-events-none group-hover:text-amber-700/20 transition-all">III</div>
+                        <div class="w-14 h-14 bg-imperial-red/20 border border-imperial-gold rounded-full flex items-center justify-center mb-4 text-imperial-gold text-2xl">
+                            <i class="fa-solid fa-fire-flame-curved"></i>
+                        </div>
+                        <h3 class="font-cinzel text-xl text-imperial-gold font-bold mb-2">ЧИСТОТА КРОВІ ТА РОЗУМУ</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">
+                            Оберігай свою плоть від скверни Хаосу. Мутація — це відхилення від святого образу Людини. Неважливо, яка загроза — варп буде знищений!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RECRUITMENT FORM SECTION -->
+        <section id="recruit" class="py-16 px-4 md:px-8 bg-gradient-to-b from-black via-amber-950/20 to-black border-b border-imperial-gold/30">
+            <div class="max-w-5xl mx-auto">
+                <div class="text-center mb-10">
+                    <span class="text-imperial-red font-tech text-xs tracking-widest uppercase block mb-1">ДЕПАРТАМЕНТ МУНІТОРУМ Повідомляє</span>
+                    <h2 class="font-gothic text-4xl md:text-5xl text-imperial-gold tracking-wide">ВЕРБУВАЛЬНИЙ ПУНКТ АСТРА МІЛІТАРУМ</h2>
+                    <p class="text-gray-400 font-cinzel text-sm mt-2">Заповни закликовий документ та отримай свій Персональний Мандат Гвардійця</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    
+                    <!-- Left: Form Input -->
+                    <div class="lg:col-span-7 bg-black/90 border-2 border-imperial-gold/60 p-6 rounded gothic-border shadow-2xl">
+                        <form id="enlistmentForm" onsubmit="generateGuardsmanCard(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-imperial-gold font-cinzel text-xs uppercase tracking-wider mb-1">Прізвище та Ім'я Новачка</label>
+                                <input type="text" id="recruitName" required placeholder="напр. Касркін Тарк Ворн" class="w-full bg-stone-900 border border-amber-800 text-white px-4 py-2.5 rounded focus:border-imperial-gold focus:outline-none font-sans text-sm">
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-imperial-gold font-cinzel text-xs uppercase tracking-wider mb-1">Рідний Світ Origin</label>
+                                    <select id="originWorld" class="w-full bg-stone-900 border border-amber-800 text-white px-3 py-2.5 rounded focus:border-imperial-gold focus:outline-none text-sm">
+                                        <option value="Кадія (Павша, але стоїть!)">Кадія (Світ-Фортеця)</option>
+                                        <option value="Катачан (Світ Смерті)">Катачан (Світ Смерті)</option>
+                                        <option value="Кріг (Світ-Атомне Згарище)">Кріг (Корпус Смерті)</option>
+                                        <option value="Армагеддон (Світ-Вулик)">Армагеддон (Світ-Вулик)</option>
+                                        <option value="Марс (Світ-Кузня)">Марс (Світ-Кузня)</option>
+                                        <option value="Терра Священна">Свята Терра</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-imperial-gold font-cinzel text-xs uppercase tracking-wider mb-1">Бажана Зброя</label>
+                                    <select id="weaponChoice" class="w-full bg-stone-900 border border-amber-800 text-white px-3 py-2.5 rounded focus:border-imperial-gold focus:outline-none text-sm">
+                                        <option value="Стандартний Лазган М36">Стандартний Лазган M36</option>
+                                        <option value="Плазмаган 'Сонячний Спалах'">Плазмаган 'Сонячний Спалах'</option>
+                                        <option value="Огнемет Мельта-типу">Мельта-гармата</option>
+                                        <option value="Ланцюговий Меч та Болт-пістолет">Ланцюговий Меч & Болтер</option>
+                                        <option value="Важкий Болтер Свяченого Вогню">Важкий Болтер</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-imperial-gold font-cinzel text-xs uppercase tracking-wider mb-1">Клятвенне Запевнення</label>
+                                <textarea id="oathText" rows="2" class="w-full bg-stone-900 border border-amber-800 text-white p-3 rounded focus:border-imperial-gold focus:outline-none text-sm italic" placeholder="Я присягаюся віддати кров і кістки за Трону Терри..."></textarea>
+                            </div>
+
+                            <button type="submit" onclick="playLaserSound()" class="w-full py-3.5 bg-imperial-gold hover:bg-amber-400 text-black font-cinzel font-black text-sm uppercase tracking-widest rounded transition-all shadow-gold-glow flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-stamp"></i>
+                                СФОРМУВАТИ ПРИЗОВНИЙ МАНДАТ
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Right: Dynamic Generated ID Card Preview -->
+                    <div class="lg:col-span-5">
+                        <div id="cardPreviewContainer" class="bg-imperial-parchment text-black p-6 rounded shadow-2xl border-4 border-amber-900 relative overflow-hidden transition-all duration-500 transform hover:scale-105">
+                            
+                            <!-- Purity Seal Graphic Top Right -->
+                            <div class="absolute -top-2 -right-2 z-20 flex flex-col items-center purity-seal-ribbon">
+                                <div class="w-12 h-12 bg-imperial-red rounded-full border-2 border-red-950 flex items-center justify-center shadow-lg text-imperial-gold text-xs font-bold">
+                                    ✠
+                                </div>
+                                <div class="w-4 h-16 bg-imperial-red border-x border-red-900 shadow"></div>
+                            </div>
+
+                            <!-- Card Header -->
+                            <div class="border-b-2 border-black/80 pb-3 mb-4 flex items-center gap-3">
+                                <i class="fa-solid fa-shield-cat text-3xl text-amber-900"></i>
+                                <div>
+                                    <h4 class="font-cinzel text-lg font-black tracking-tight leading-none uppercase text-amber-950">АСТРА МІЛІТАРУМ</h4>
+                                    <span class="font-tech text-[9px] text-amber-800 tracking-widest uppercase block mt-1">ОФІЦІЙНИЙ МАНДАТ РЕКРУТА</span>
+                                </div>
+                            </div>
+
+                            <!-- Card Details Body -->
+                            <div class="space-y-2 font-mono text-xs text-amber-950">
+                                <div class="flex justify-between border-b border-amber-900/20 pb-1">
+                                    <span class="font-bold">ІДЕНТИФІКАТОР:</span>
+                                    <span id="cardID" class="font-tech text-red-900">IG-8849-M41</span>
+                                </div>
+                                <div class="flex justify-between border-b border-amber-900/20 pb-1">
+                                    <span class="font-bold">ІМ'Я ГВАРДІЙЦЯ:</span>
+                                    <span id="cardName" class="font-bold uppercase text-black">Тарк Ворн</span>
+                                </div>
+                                <div class="flex justify-between border-b border-amber-900/20 pb-1">
+                                    <span class="font-bold">СВІТ ПОХОДЖЕННЯ:</span>
+                                    <span id="cardOrigin" class="text-amber-900">Кадія</span>
+                                </div>
+                                <div class="flex justify-between border-b border-amber-900/20 pb-1">
+                                    <span class="font-bold">СПЕЦІАЛІЗАЦІЯ:</span>
+                                    <span id="cardWeapon" class="text-amber-900">Лазган M36</span>
+                                </div>
+                                <div class="pt-2">
+                                    <span class="font-bold block text-[10px] uppercase text-amber-900">Особиста присяга:</span>
+                                    <p id="cardOath" class="italic text-[11px] leading-tight text-stone-800 bg-amber-200/50 p-2 rounded mt-1 border border-amber-800/20">
+                                        «Моя кров — це чорнило для слави Бог-Імператора!»
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Fake Barcode Canvas -->
+                            <div class="mt-4 pt-3 border-t-2 border-black/80 flex items-center justify-between">
+                                <div class="h-8 w-40 bg-black flex items-center justify-around px-1">
+                                    <!-- Barcode lines -->
+                                    <div class="w-1 h-full bg-white"></div>
+                                    <div class="w-2 h-full bg-white"></div>
+                                    <div class="w-0.5 h-full bg-white"></div>
+                                    <div class="w-1.5 h-full bg-white"></div>
+                                    <div class="w-1 h-full bg-white"></div>
+                                    <div class="w-3 h-full bg-white"></div>
+                                    <div class="w-0.5 h-full bg-white"></div>
+                                    <div class="w-2 h-full bg-white"></div>
+                                </div>
+                                <span class="font-gothic text-xs text-amber-950 font-bold">За Терру!</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- HERESY SCANNER / INQUISITION QUIZ SECTION -->
+        <section id="heresy-scanner" class="py-16 px-4 md:px-8 bg-black/95 border-b border-imperial-gold/30 relative">
+            <div class="max-w-4xl mx-auto">
+                
+                <div class="text-center mb-10">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 bg-red-950/80 border border-red-600 rounded-full text-red-500 font-tech text-xs mb-3">
+                        <i class="fa-solid fa-eye animate-ping"></i>
+                        СЕНСОРИ ІНКВІЗИЦІЇ АКТИВНІ
+                    </div>
+                    <h2 class="font-gothic text-4xl md:text-5xl text-imperial-gold">ПЕРЕВІРКА НА СИМПТОМИ ЄРЕСІ</h2>
+                    <p class="text-gray-400 font-cinzel text-sm mt-2">Дай відповідь на серію когітаційних питань для визначення ступеня варп-скверни</p>
+                </div>
+
+                <!-- Scanner Console Box -->
+                <div class="bg-imperial-cogitator border-2 border-green-700/60 p-6 md:p-8 rounded gothic-border shadow-green-glow">
+                    
+                    <!-- Top Console Monitor Header -->
+                    <div class="flex items-center justify-between border-b border-green-800/50 pb-4 mb-6 font-tech text-xs text-green-400">
+                        <span class="flex items-center gap-2">
+                            <span class="h-2 w-2 bg-green-500 rounded-full animate-pulse"></span>
+                            INQUISITORIAL EVALUATION SYSTEM
+                        </span>
+                        <span id="questionCounter">ПИТАННЯ 1 З 3</span>
+                    </div>
+
+                    <!-- Dynamic Question Area -->
+                    <div id="quizContent">
+                        <h3 id="quizQuestionText" class="font-cinzel text-lg md:text-xl text-amber-100 font-bold mb-6">
+                            1. Ви знайшли старовинну книгу із дивними сяючими символами у закинутому блоці вулика. Ваші дії?
+                        </h3>
+
+                        <div id="quizOptions" class="space-y-3">
+                            <button onclick="answerHeresyQuiz(0)" class="w-full text-left p-4 bg-stone-900/90 hover:bg-amber-950/60 border border-green-900/60 hover:border-imperial-gold text-gray-200 hover:text-white rounded transition-all font-sans text-sm flex items-center justify-between">
+                                <span>А) Негайно спалю її святим прометеєм і повідомлю Найближчого Інквізитора!</span>
+                                <i class="fa-solid fa-chevron-right text-imperial-gold opacity-0 group-hover:opacity-100"></i>
+                            </button>
+                            <button onclick="answerHeresyQuiz(1)" class="w-full text-left p-4 bg-stone-900/90 hover:bg-amber-950/60 border border-green-900/60 hover:border-imperial-gold text-gray-200 hover:text-white rounded transition-all font-sans text-sm">
+                                <span>Б) Спробую розчитати першу сторінку з цікавості, а потім викину.</span>
+                            </button>
+                            <button onclick="answerHeresyQuiz(2)" class="w-full text-left p-4 bg-stone-900/90 hover:bg-amber-950/60 border border-green-900/60 hover:border-imperial-gold text-gray-200 hover:text-white rounded transition-all font-sans text-sm">
+                                <span>В) Сховаю її під матрац, щоб шепотіти молитовні заклинання вночі.</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Quiz Result Display (Hidden initially) -->
+                    <div id="quizResult" class="hidden text-center py-6">
+                        <div id="resultIcon" class="text-6xl mb-4"></div>
+                        <h3 id="resultTitle" class="font-gothic text-4xl mb-2"></h3>
+                        <p id="resultDesc" class="text-gray-300 font-cinzel text-sm max-w-xl mx-auto mb-6 leading-relaxed"></p>
+                        <button onclick="resetHeresyQuiz()" class="px-6 py-2.5 bg-imperial-gold text-black font-cinzel font-bold text-xs uppercase rounded hover:bg-amber-400 transition-all">
+                            Пройти перевірку знову
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ENEMIES OF MAN ENCYCLOPEDIA -->
+        <section class="py-16 px-4 md:px-8 bg-black/90 border-b border-imperial-gold/30">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-12">
+                    <span class="text-imperial-gold font-tech text-xs tracking-widest uppercase block mb-1">КСЕНО-ТЕКА ТА ЄРЕСІАЛОГІЯ</span>
+                    <h2 class="font-cinzel text-3xl md:text-4xl text-white font-bold">ГОЛОВНІ ВОРОГИ ЛЮДСТВА</h2>
+                    <p class="text-gray-400 font-sans text-sm mt-1">Вивчай ворога, щоб ефективніше забирати його нікчемне життя</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    
+                    <!-- Threat 1: Chaos -->
+                    <div class="bg-stone-900/60 border border-red-900/60 rounded p-5 flex flex-col justify-between hover:border-red-600 transition-all group">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-2 py-0.5 bg-red-950 text-red-500 font-tech text-[10px] border border-red-800 rounded">РІВЕНЬ: ЕКСТРЕМАЛЬНИЙ</span>
+                                <i class="fa-solid fa-biohazard text-red-600 text-xl group-hover:rotate-45 transition-transform"></i>
+                            </div>
+                            <h3 class="font-cinzel text-xl font-bold text-red-500 mb-2">ЄРЕТИКИ ТА ХАОС</h3>
+                            <p class="text-xs text-gray-400 leading-relaxed mb-4">
+                                Зрадники з Космодесанту Хаосу та культисти Варпу. Прагнуть знищити світло Астрономікона та поглинути галактику в темряву.
+                            </p>
+                        </div>
+                        <div class="border-t border-stone-800 pt-3 text-[11px] font-mono text-imperial-gold">
+                            НАКАЗ: Негайно винищувати вогнем!
+                        </div>
+                    </div>
+
+                    <!-- Threat 2: Orks -->
+                    <div class="bg-stone-900/60 border border-green-900/60 rounded p-5 flex flex-col justify-between hover:border-green-600 transition-all group">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-2 py-0.5 bg-green-950 text-green-500 font-tech text-[10px] border border-green-800 rounded">РІВЕНЬ: ВИСОКИЙ</span>
+                                <i class="fa-solid fa-skull text-green-600 text-xl group-hover:scale-125 transition-transform"></i>
+                            </div>
+                            <h3 class="font-cinzel text-xl font-bold text-green-500 mb-2">ОРКИ (КСЕНОСИ)</h3>
+                            <p class="text-xs text-gray-400 leading-relaxed mb-4">
+                                Варварські дикуни, що живуть заради постійної війни ("WAAAGH!"). Не мають розуму, але беруть числом та дикою силою.
+                            </p>
+                        </div>
+                        <div class="border-t border-stone-800 pt-3 text-[11px] font-mono text-imperial-gold">
+                            НАКАЗ: Тримати прицільний вогонь!
+                        </div>
+                    </div>
+
+                    <!-- Threat 3: Tyranids -->
+                    <div class="bg-stone-900/60 border border-purple-900/60 rounded p-5 flex flex-col justify-between hover:border-purple-600 transition-all group">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-2 py-0.5 bg-purple-950 text-purple-400 font-tech text-[10px] border border-purple-800 rounded">РІВЕНЬ: КРИТИЧНИЙ</span>
+                                <i class="fa-solid fa-bugs text-purple-500 text-xl group-hover:translate-x-1 transition-transform"></i>
+                            </div>
+                            <h3 class="font-cinzel text-xl font-bold text-purple-400 mb-2">ТІРАНІДИ (ВУЛИК)</h3>
+                            <p class="text-xs text-gray-400 leading-relaxed mb-4">
+                                Ненажерливий міжгалактичний рій органічних потвор, що пожирають усю біомасу на планетах до повного випалена.
+                            </p>
+                        </div>
+                        <div class="border-t border-stone-800 pt-3 text-[11px] font-mono text-imperial-gold">
+                            НАКАЗ: Спалювати до молекул!
+                        </div>
+                    </div>
+
+                    <!-- Threat 4: Necrons -->
+                    <div class="bg-stone-900/60 border border-cyan-900/60 rounded p-5 flex flex-col justify-between hover:border-cyan-600 transition-all group">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-2 py-0.5 bg-cyan-950 text-cyan-400 font-tech text-[10px] border border-cyan-800 rounded">РІВЕНЬ: ВЕЛИКИЙ</span>
+                                <i class="fa-solid fa-robot text-cyan-400 text-xl group-hover:rotate-12 transition-transform"></i>
+                            </div>
+                            <h3 class="font-cinzel text-xl font-bold text-cyan-400 mb-2">НЕКРОНИ (МЕТАЛ)</h3>
+                            <p class="text-xs text-gray-400 leading-relaxed mb-4">
+                                Древні бездушні скелети з живого металу, що пробуджуються зі своїх гробниць для винищення всього живого.
+                            </p>
+                        </div>
+                        <div class="border-t border-stone-800 pt-3 text-[11px] font-mono text-imperial-gold">
+                            НАКАЗ: Застосовувати важку артилерію!
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- IMPERIAL THOUGHT FOR THE DAY GENERATOR -->
+        <section class="py-16 px-4 md:px-8 bg-gradient-to-b from-black via-amber-950/30 to-black border-b border-imperial-gold/30 text-center">
+            <div class="max-w-3xl mx-auto">
+                
+                <i class="fa-solid fa-book-bookmark text-imperial-gold text-4xl mb-3"></i>
+                <h2 class="font-gothic text-4xl text-imperial-gold mb-2">СВЯЩЕННА ДУМКА ДНЯ</h2>
+                <p class="text-xs font-tech text-amber-300 uppercase tracking-widest mb-8">ДЕПАРТАМЕНТ АНАЛІТИКИ ТА МУДРОСТІ ТЕРРИ</p>
+
+                <!-- Display Box -->
+                <div class="bg-black/80 border-2 border-imperial-gold p-8 rounded gothic-border shadow-gold-glow relative">
+                    <p id="thoughtDisplay" class="font-cinzel text-xl md:text-2xl text-amber-100 font-bold italic leading-relaxed min-h-[80px] flex items-center justify-center">
+                        «Невігластво — це благословіння. Розум, відкритий для сумнівів — це фортеця з незачиненими воротами.»
+                    </p>
+                    
+                    <div class="mt-6 pt-4 border-t border-amber-900/50 flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-amber-400">
+                        <span id="thoughtAuthor">— Збірка Мудрості Екклезіархії</span>
+                        <button onclick="generateRandomThought()" class="px-5 py-2.5 bg-imperial-red hover:bg-red-700 text-white font-cinzel font-bold text-xs rounded border border-imperial-gold transition-all flex items-center gap-2 mx-auto sm:mx-0">
+                            <i class="fa-solid fa-rotate"></i>
+                            ОТРИМАТИ НОВУ ДУМКУ
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="bg-black py-10 px-4 text-center border-t border-imperial-gold/40 relative z-20">
+            <div class="max-w-4xl mx-auto space-y-4">
+                <div class="font-gothic text-2xl text-imperial-gold">
+                    БОГ-ІМПЕРАТОР БАЧИТЬ ТВОЇ ДУМКИ
+                </div>
+                <p class="font-mono text-xs text-stone-500 max-w-xl mx-auto">
+                    Цей агітаційний ресурс функціонує за безпосереднім мандатом Священної Інквізиції Адептус Терра. Будь-яка спроба фальсифікації коду вважається вищою зрадою.
+                </p>
+                <div class="text-[10px] text-amber-900/80 font-tech">
+                    WARHAMMER 40,000 fan propaganda site in Ukrainian • M41.999
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- EXTERMINATUS WARNING MODAL -->
+    <div id="exterminatusModal" class="fixed inset-0 bg-red-950/90 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-black border-4 border-red-600 p-8 max-w-lg w-full text-center shadow-red-glow rounded gothic-border animate-bounce">
+            <i class="fa-solid fa-radiation text-red-600 text-6xl mb-4 animate-spin"></i>
+            <h3 class="font-tech text-2xl text-red-500 font-bold mb-2">САНКЦІОНОВАНО ЕКСТЕРМІНАТУС</h3>
+            <p class="font-cinzel text-white text-sm mb-6 leading-relaxed">
+                На планету націлено циклонні торпеди Інквізиції. Усі життєві форми підлягають негайній деструкції у вогні.
+            </p>
+            <button onclick="closeExterminatusWarning()" class="px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-tech text-xs uppercase font-bold rounded">
+                ПРИЙНЯТИ ВОЛЮ ІМПЕРАТОРА
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Canvas Ember Particles Setup
+        const canvas = document.getElementById('emberCanvas');
+        const ctx = canvas.getContext('2d');
+        let embers = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Ember {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height + Math.random() * 20;
+                this.size = Math.random() * 3 + 1;
+                this.speedY = Math.random() * 1.5 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.8;
+                this.opacity = Math.random() * 0.8 + 0.2;
+                this.color = Math.random() > 0.3 ? '#dc2626' : '#d4af37';
+            }
+            update() {
+                this.y -= this.speedY;
+                this.x += this.speedX;
+                this.opacity -= 0.002;
+                if (this.y < 0 || this.opacity <= 0) {
+                    this.reset();
+                }
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.opacity;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 60; i++) {
+            embers.push(new Ember());
+        }
+
+        function animateEmbers() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            embers.forEach(ember => {
+                ember.update();
+                ember.draw();
+            });
+            requestAnimationFrame(animateEmbers);
+        }
+        animateEmbers();
+
+        // Web Audio API Sound Synthesizer (No external sound files required)
+        let audioCtx = null;
+        let isAudioOn = false;
+        let ambientOsc = null;
+        let ambientGain = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function toggleImperialVoxAudio() {
+            initAudio();
+            const btnText = document.getElementById('audioStatusText');
+            const icon = document.getElementById('audioIcon');
+
+            if (!isAudioOn) {
+                // Turn on Ambient Gothic Drone
+                ambientOsc = audioCtx.createOscillator();
+                ambientGain = audioCtx.createGain();
+
+                ambientOsc.type = 'sawtooth';
+                ambientOsc.frequency.setValueAtTime(55, audioCtx.currentTime); // Low A1 note Cathedral hum
+
+                ambientGain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+
+                ambientOsc.connect(ambientGain);
+                ambientGain.connect(audioCtx.destination);
+
+                ambientOsc.start();
+                isAudioOn = true;
+
+                btnText.textContent = "ВИМКНУТИ ВОКС";
+                icon.className = "fa-solid fa-volume-high text-green-400";
+            } else {
+                if (ambientOsc) {
+                    ambientOsc.stop();
+                }
+                isAudioOn = false;
+                btnText.textContent = "УВІМКНУТИ ВОКС-ОРГАН";
+                icon.className = "fa-solid fa-volume-xmark";
+            }
+        }
+
+        function playClickSound() {
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.1);
+        }
+
+        function playLaserSound() {
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(1200, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.3);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.3);
+        }
+
+        function generateGuardsmanCard(e) {
+            e.preventDefault();
+            const name = document.getElementById('recruitName').value || "Невідомий";
+            const origin = document.getElementById('originWorld').value;
+            const weapon = document.getElementById('weaponChoice').value;
+            const oath = document.getElementById('oathText').value || "За Бог-Імператора та Святу Терру!";
+
+            // Generate Random Imperial Regimental ID
+            const randomID = 'IG-' + Math.floor(1000 + Math.random() * 9000) + '-M41';
+
+            document.getElementById('cardName').textContent = name;
+            document.getElementById('cardOrigin').textContent = origin;
+            document.getElementById('cardWeapon').textContent = weapon;
+            document.getElementById('cardOath').textContent = `«${oath}»`;
+            document.getElementById('cardID').textContent = randomID;
+
+            // Flash visual feedback
+            const card = document.getElementById('cardPreviewContainer');
+            card.classList.add('ring-4', 'ring-imperial-gold');
+            setTimeout(() => card.classList.remove('ring-4', 'ring-imperial-gold'), 1000);
+        }
+
+        const quizQuestions = [
+            {
+                q: "1. Ви помітили дивний сяючий амулет, що висить на шиї вашого сержанта. Ваші дії?",
+                options: [
+                    "А) Негайно доповім Комісару підрозділу про підозру у варп-скверні.",
+                    "Б) Попрошу потримати прикрасу, бо вона гарно виблискує.",
+                    "В) Мовчатиму, бо сержант ділиться зі мною додатковим пайоком."
+                ],
+                heresyScores: [0, 50, 100]
+            },
+            {
+                q: "2. Під час запеклого бою Ваш Лазган перегрівся та вибухнув. Як Ви вчините?",
+                options: [
+                    "А) Прочитаю Литанію Пробачення Духу Машини і кинуся на ворога з багнетом!",
+                    "Б) Почну жалітися на погану якість зброї з Марса.",
+                    "В) Кину зброю і побіжу ховатися в найближчу вентиляцію."
+                ],
+                heresyScores: [0, 40, 90]
+            },
+            {
+                q: "3. Що Ви відчуваєте, коли бачите Великого Інквізитора?",
+                options: [
+                    "А) Священний трепет, беззаперечну вірність та готовність виконати будь-який наказ.",
+                    "Б) Невеличкий страх за свої дрібні гріхи.",
+                    "В) Бажання розпитати його про таємниці Хаосу."
+                ],
+                heresyScores: [0, 30, 100]
+            }
+        ];
+
+        let currentQIndex = 0;
+        let totalHeresyScore = 0;
+
+        function answerHeresyQuiz(optionIndex) {
+            playClickSound();
+            totalHeresyScore += quizQuestions[currentQIndex].heresyScores[optionIndex];
+            currentQIndex++;
+
+            if (currentQIndex < quizQuestions.length) {
+                renderQuestion();
+            } else {
+                showQuizResults();
+            }
+        }
+
+        function renderQuestion() {
+            document.getElementById('questionCounter').textContent = `ПИТАННЯ ${currentQIndex + 1} З ${quizQuestions.length}`;
+            document.getElementById('quizQuestionText').textContent = quizQuestions[currentQIndex].q;
+            
+            const optionsDiv = document.getElementById('quizOptions');
+            optionsDiv.innerHTML = '';
+
+            quizQuestions[currentQIndex].options.forEach((optText, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 bg-stone-900/90 hover:bg-amber-950/60 border border-green-900/60 hover:border-imperial-gold text-gray-200 hover:text-white rounded transition-all font-sans text-sm flex items-center justify-between";
+                btn.onclick = () => answerHeresyQuiz(idx);
+                btn.innerHTML = `<span>${optText}</span>`;
+                optionsDiv.appendChild(btn);
+            });
+        }
+
+        function showQuizResults() {
+            document.getElementById('quizContent').classList.add('hidden');
+            const resDiv = document.getElementById('quizResult');
+            resDiv.classList.remove('hidden');
+
+            const icon = document.getElementById('resultIcon');
+            const title = document.getElementById('resultTitle');
+            const desc = document.getElementById('resultDesc');
+
+            if (totalHeresyScore < 30) {
+                icon.innerHTML = '<i class="fa-solid fa-shield-cat text-imperial-gold"></i>';
+                title.textContent = "ЧИСТИЙ ПЕРЕД ІМПЕРАТОРОМ";
+                title.className = "font-gothic text-4xl mb-2 text-imperial-gold";
+                desc.textContent = "Твій розум — закрита фортеця. Ти гідний носити звання слуги Бог-Імператора. Інквізиція залишає тебе у спокої... поки що.";
+            } else if (totalHeresyScore < 100) {
+                icon.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-amber-500"></i>';
+                title.textContent = "ПІДОЗРА В ЄРЕСІ";
+                title.className = "font-gothic text-4xl mb-2 text-amber-500";
+                desc.textContent = "У твоєму серці виявлено зерна сумніву. Тебе направлено до найближчого Серво-покаянця для примусового очищення розуму.";
+            } else {
+                icon.innerHTML = '<i class="fa-solid fa-skull-crossbones text-red-600"></i>';
+                title.textContent = "ОГОЛОШЕНО ЄРЕТИКОМ!";
+                title.className = "font-gothic text-4xl mb-2 text-red-600";
+                desc.textContent = "Твій розум повністю отруєний варпом! Загони Арбітрес та загін Інквізитора вже висунулися на твої координати. Смерть зраднику!";
+                triggerExterminatusWarning();
+            }
+        }
+
+        function resetHeresyQuiz() {
+            currentQIndex = 0;
+            totalHeresyScore = 0;
+            document.getElementById('quizResult').classList.add('hidden');
+            document.getElementById('quizContent').classList.remove('hidden');
+            renderQuestion();
+        }
+
+        const imperialThoughts = [
+            "«Невігластво — це благословіння. Розум, відкритий для сумнівів — це фортеця з незачиненими воротами.»",
+            "«Біль — це лише ілюзія відчуттів, а вірність — це вічність.»",
+            "«Молись за мир, готуйся до війни, помри за Імператора!»",
+            "«Ніякого милосердя ксеносам, ніякого вибачення єретикам, ніякого жалю зрадникам!»",
+            "«Кров мучеників — це насіння Імперіуму.»",
+            "«У нас немає місця для боягузів, бо боягузтво — це зрада Трону.»",
+            "«Смерть єдиний справжній борг кожного гвардійця перед Імператором.»",
+            "«Прометей очищує плоть, а молитва очищує дух.»"
+        ];
+
+        function generateRandomThought() {
+            playClickSound();
+            const thoughtText = document.getElementById('thoughtDisplay');
+            const random = imperialThoughts[Math.floor(Math.random() * imperialThoughts.length)];
+            thoughtText.textContent = random;
+        }
+
+        function triggerExterminatusWarning() {
+            playLaserSound();
+            document.getElementById('exterminatusModal').classList.remove('hidden');
+        }
+
+        function closeExterminatusWarning() {
+            playClickSound();
+            document.getElementById('exterminatusModal').classList.add('hidden');
+        }
+
+        // Imperial Date Simulation (M41.999)
+        function updateImperialClock() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const sec = String(now.getSeconds()).padStart(2, '0');
+            const min = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('terraClock').textContent = `${min}:${sec} • 999.M41`;
+        }
+        setInterval(updateImperialClock, 1000);
+        updateImperialClock();
+    </script>
+</body>
+</html>
