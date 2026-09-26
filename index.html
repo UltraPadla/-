@@ -461,27 +461,13 @@
                             <span class="h-2 w-2 bg-green-500 rounded-full animate-pulse"></span>
                             INQUISITORIAL EVALUATION SYSTEM
                         </span>
-                        <span id="questionCounter">ПИТАННЯ 1 З 3</span>
+                        <span id="questionCounter">ПИТАННЯ 1 З 7</span>
                     </div>
 
                     <!-- Dynamic Question Area -->
                     <div id="quizContent">
-                        <h3 id="quizQuestionText" class="font-cinzel text-lg md:text-xl text-amber-100 font-bold mb-6">
-                            1. Ви знайшли старовинну книгу із дивними сяючими символами у закинутому блоці вулика. Ваші дії?
-                        </h3>
-
-                        <div id="quizOptions" class="space-y-3">
-                            <button onclick="answerHeresyQuiz(0)" class="w-full text-left p-4 bg-stone-900/90 hover:bg-amber-950/60 border border-green-900/60 hover:border-imperial-gold text-gray-200 hover:text-white rounded transition-all font-sans text-sm flex items-center justify-between">
-                                <span>А) Негайно спалю її святим прометеєм і повідомлю Найближчого Інквізитора!</span>
-                                <i class="fa-solid fa-chevron-right text-imperial-gold opacity-0 group-hover:opacity-100"></i>
-                            </button>
-                            <button onclick="answerHeresyQuiz(1)" class="w-full text-left p-4 bg-stone-900/90 hover:bg-amber-950/60 border border-green-900/60 hover:border-imperial-gold text-gray-200 hover:text-white rounded transition-all font-sans text-sm">
-                                <span>Б) Спробую розчитати першу сторінку з цікавості, а потім викину.</span>
-                            </button>
-                            <button onclick="answerHeresyQuiz(2)" class="w-full text-left p-4 bg-stone-900/90 hover:bg-amber-950/60 border border-green-900/60 hover:border-imperial-gold text-gray-200 hover:text-white rounded transition-all font-sans text-sm">
-                                <span>В) Сховаю її під матрац, щоб шепотіти молитовні заклинання вночі.</span>
-                            </button>
-                        </div>
+                        <h3 id="quizQuestionText" class="font-cinzel text-lg md:text-xl text-amber-100 font-bold mb-6"></h3>
+                        <div id="quizOptions" class="space-y-3"></div>
                     </div>
 
                     <!-- Quiz Result Display (Hidden initially) -->
@@ -796,38 +782,67 @@
             {
                 q: "1. Ви помітили дивний сяючий амулет, що висить на шиї вашого сержанта. Ваші дії?",
                 options: [
-                    "А) Негайно доповім Комісару підрозділу про підозру у варп-скверні.",
-                    "Б) Попрошу потримати прикрасу, бо вона гарно виблискує.",
-                    "В) Мовчатиму, бо сержант ділиться зі мною додатковим пайоком."
-                ],
-                heresyScores: [0, 50, 100]
+                    { text: "Попрошу потримати прикрасу, бо вона гарно виблискує.", score: 50 },
+                    { text: "Негайно доповім Комісару підрозділу про підозру у варп-скверні.", score: 0 },
+                    { text: "Мовчатиму, бо сержант ділиться зі мною додатковим пайоком.", score: 100 }
+                ]
             },
             {
                 q: "2. Під час запеклого бою Ваш Лазган перегрівся та вибухнув. Як Ви вчините?",
                 options: [
-                    "А) Прочитаю Литанію Пробачення Духу Машини і кинуся на ворога з багнетом!",
-                    "Б) Почну жалітися на погану якість зброї з Марса.",
-                    "В) Кину зброю і побіжу ховатися в найближчу вентиляцію."
-                ],
-                heresyScores: [0, 40, 90]
+                    { text: "Почну жалітися на погану якість зброї з Марса.", score: 40 },
+                    { text: "Кину зброю і побіжу ховатися в найближчу вентиляцію.", score: 90 },
+                    { text: "Прочитаю Литанію Пробачення Духу Машини і кинуся на ворога з багнетом!", score: 0 }
+                ]
             },
             {
-                q: "3. Що Ви відчуваєте, коли бачите Великого Інквізитора?",
+                q: "3. Поранений ксенос (Ельдар) благає про медичну допомогу. Твої дії?",
                 options: [
-                    "А) Священний трепет, беззаперечну вірність та готовність виконати будь-який наказ.",
-                    "Б) Невеличкий страх за свої дрібні гріхи.",
-                    "В) Бажання розпитати його про таємниці Хаосу."
-                ],
-                heresyScores: [0, 30, 100]
+                    { text: "Очищу його священним полум'ям прометею або застрелю без роздумів!", score: 0 },
+                    { text: "Перев'яжу рану, бо кожна жива істота заслуговує на співчуття.", score: 60 },
+                    { text: "Запропоную йому обміняти інопланетні технології на ліки.", score: 100 }
+                ]
+            },
+            {
+                q: "4. Що Ви відчуваєте, коли бачите Великого Інквізитора?",
+                options: [
+                    { text: "Невеличкий страх за свої дрібні гріхи.", score: 30 },
+                    { text: "Священний трепет, беззаперечну вірність та готовність виконати будь-який наказ.", score: 0 },
+                    { text: "Бажання розпитати його про таємниці Хаосу.", score: 100 }
+                ]
+            },
+            {
+                q: "5. Уночі Ви чуєте шепіт із вентиляційної шахти, який обіцяє багатство та владу. Що робитимете?",
+                options: [
+                    { text: "Тихо прислухаюся — раптом там кажуть щось корисне?", score: 50 },
+                    { text: "Відповім шепоту та складу криваву клятву темним богам.", score: 100 },
+                    { text: "Гучно прочитаю Молитву Захисту Трону та запечатаю шахту зварюванням.", score: 0 }
+                ]
+            },
+            {
+                q: "6. Ваш побратим у бараках починає малювати на стіні дивну восьмикутну зірку. Ваша реакція?",
+                options: [
+                    { text: "Викличу загін Арбітрес і особисто заряджу важкий болтер.", score: 0 },
+                    { text: "Пораджу йому обрати кращий колір для орнаменту.", score: 40 },
+                    { text: "Допоможу йому дописати заклинання для виклику темних сил.", score: 100 }
+                ]
+            },
+            {
+                q: "7. Комісар віддає наказ піти у лобову атаку на танк Орків з одним лише багнетом. Що Ви відповісте?",
+                options: [
+                    { text: "Запитаю, чи можна спочатку підірвати танк гранатою з укриття.", score: 30 },
+                    { text: "«За Бог-Імператора!» і безстрашно ринуся вперед!", score: 0 },
+                    { text: "Розвернуся і спробую втекти до найближчого цивільного сектора.", score: 90 }
+                ]
             }
         ];
 
         let currentQIndex = 0;
         let totalHeresyScore = 0;
 
-        function answerHeresyQuiz(optionIndex) {
+        function answerHeresyQuiz(score) {
             playClickSound();
-            totalHeresyScore += quizQuestions[currentQIndex].heresyScores[optionIndex];
+            totalHeresyScore += score;
             currentQIndex++;
 
             if (currentQIndex < quizQuestions.length) {
@@ -844,11 +859,13 @@
             const optionsDiv = document.getElementById('quizOptions');
             optionsDiv.innerHTML = '';
 
-            quizQuestions[currentQIndex].options.forEach((optText, idx) => {
+            const prefixes = ["А) ", "Б) ", "В) "];
+
+            quizQuestions[currentQIndex].options.forEach((opt, idx) => {
                 const btn = document.createElement('button');
-                btn.className = "w-full text-left p-4 bg-stone-900/90 hover:bg-amber-950/60 border border-green-900/60 hover:border-imperial-gold text-gray-200 hover:text-white rounded transition-all font-sans text-sm flex items-center justify-between";
-                btn.onclick = () => answerHeresyQuiz(idx);
-                btn.innerHTML = `<span>${optText}</span>`;
+                btn.className = "w-full text-left p-4 bg-stone-900/90 hover:bg-amber-950/60 border border-green-900/60 hover:border-imperial-gold text-gray-200 hover:text-white rounded transition-all font-sans text-sm flex items-center justify-between group";
+                btn.onclick = () => answerHeresyQuiz(opt.score);
+                btn.innerHTML = `<span>${prefixes[idx]}${opt.text}</span><i class="fa-solid fa-chevron-right text-imperial-gold opacity-0 group-hover:opacity-100 transition-opacity"></i>`;
                 optionsDiv.appendChild(btn);
             });
         }
@@ -862,12 +879,14 @@
             const title = document.getElementById('resultTitle');
             const desc = document.getElementById('resultDesc');
 
-            if (totalHeresyScore < 30) {
+            const avgHeresy = totalHeresyScore / quizQuestions.length;
+
+            if (avgHeresy < 15) {
                 icon.innerHTML = '<i class="fa-solid fa-shield-cat text-imperial-gold"></i>';
                 title.textContent = "ЧИСТИЙ ПЕРЕД ІМПЕРАТОРОМ";
                 title.className = "font-gothic text-4xl mb-2 text-imperial-gold";
                 desc.textContent = "Твій розум — закрита фортеця. Ти гідний носити звання слуги Бог-Імператора. Інквізиція залишає тебе у спокої... поки що.";
-            } else if (totalHeresyScore < 100) {
+            } else if (avgHeresy < 45) {
                 icon.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-amber-500"></i>';
                 title.textContent = "ПІДОЗРА В ЄРЕСІ";
                 title.className = "font-gothic text-4xl mb-2 text-amber-500";
@@ -888,6 +907,9 @@
             document.getElementById('quizContent').classList.remove('hidden');
             renderQuestion();
         }
+
+        // Initialize quiz display on start
+        renderQuestion();
 
         const imperialThoughts = [
             "«Невігластво — це благословіння. Розум, відкритий для сумнівів — це фортеця з незачиненими воротами.»",
@@ -920,7 +942,6 @@
         // Imperial Date Simulation (M41.999)
         function updateImperialClock() {
             const now = new Date();
-            const year = now.getFullYear();
             const sec = String(now.getSeconds()).padStart(2, '0');
             const min = String(now.getMinutes()).padStart(2, '0');
             document.getElementById('terraClock').textContent = `${min}:${sec} • 999.M41`;
